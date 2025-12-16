@@ -464,12 +464,32 @@
             box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
         }
         
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e67e22'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 20px;
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Message styles */
+        .message {
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        
+        .message.success {
+            background-color: rgba(46, 204, 113, 0.1);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            display: block;
+        }
+        
+        .message.error {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            display: block;
         }
         
         /* Footer */
@@ -858,7 +878,7 @@
                     
                     <div class="stats">
                         <div class="stat-item">
-                            <h4>200+</h4>
+                            <h4>300+</h4>
                             <p>Крытых и полувагонов</p>
                         </div>
                         <div class="stat-item">
@@ -946,7 +966,7 @@
                     </div>
                     <div class="feature-text">
                         <h4>Вагонный парк</h4>
-                        <p>Более 200 крытых и полувагонов для различных грузов</p>
+                        <p>Более 300 крытых и полувагонов для различных грузов</p>
                     </div>
                 </div>
                 
@@ -1014,39 +1034,31 @@
             </div>
             
             <div class="form-container fade-in">
-                <form id="contactForm" action="#" method="POST">
+                <div id="successMessage" class="message" style="display: none;"></div>
+                <div id="errorMessage" class="message" style="display: none;"></div>
+                
+                <form id="contactForm" method="POST">
                     <div class="form-group">
-                        <label for="name">Ваше имя</label>
+                        <label for="name">Ваше имя *</label>
                         <input type="text" id="name" name="имя" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="phone">Телефон</label>
+                        <label for="phone">Телефон *</label>
                         <input type="tel" id="phone" name="телефон" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">Email *</label>
                         <input type="email" id="email" name="email" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="cargo">Тип груза (опционально)</label>
-                        <select id="cargo" name="тип груза" class="form-control">
-                            <option value="">Выберите тип груза</option>
-                            <option value="Уголь">Уголь</option>
-                            <option value="Строительные материалы">Строительные материалы</option>
-                            <option value="Кирпичи">Кирпичи</option>
-                            <option value="Другое">Другое</option>
-                        </select>
+                        <label for="comments">Сообщение или детали груза</label>
+                        <textarea id="comments" name="комментарии" class="form-control" rows="4" placeholder="Опишите ваш груз, направление перевозки и другие детали..."></textarea>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="comments">Сообщение</label>
-                        <textarea id="comments" name="комментарии" class="form-control" rows="4" placeholder="Опишите ваш груз и маршрут..."></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn">Отправить заявку</button>
+                    <button type="submit" class="btn" id="submitBtn">Отправить заявку</button>
                 </form>
             </div>
         </div>
@@ -1159,43 +1171,6 @@
             observer.observe(el);
         });
         
-        // Обработка формы (тестовая версия)
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Собираем данные формы
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Здесь должен быть URL вашего Google Apps Script
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzVDe_bKVPENmw0d9wWT4MUY70Gx374VqVLGg3TdrVnI-jUeyNDzqtRn1zNbSaN6YYBVg/exec';
-            
-            // Отправка данных (закомментировано до настройки Google Apps Script)
-            /*
-            fetch(scriptURL, {
-                method: 'POST',
-                body: new URLSearchParams(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
-                    this.reset();
-                } else {
-                    throw new Error(data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Произошла ошибка. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
-            });
-            */
-            
-            // Временное сообщение (удалите после настройки Google Apps Script)
-            alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.\n\nДля подключения Google Apps Script следуйте инструкциям выше.');
-            this.reset();
-        });
-        
         // Изменение хедера при прокрутке
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
@@ -1206,6 +1181,85 @@
                 header.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
                 header.style.padding = '15px 0';
             }
+        });
+        
+        // Обработка формы обратной связи
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Показываем индикатор загрузки
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+            submitBtn.disabled = true;
+            
+            // Скрываем предыдущие сообщения
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Собираем данные формы
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                // ВСТАВЬТЕ СВОЙ URL СКРИПТА Google Apps Script ЗДЕСЬ
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbzVDe_bKVPENmw0d9wWT4MUY70Gx374VqVLGg3TdrVnI-jUeyNDzqtRn1zNbSaN6YYBVg/exec';
+                
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(data)
+                });
+                
+                // Поскольку no-cors не позволяет читать ответ, предполагаем успех
+                showMessage('success', 'Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.');
+                form.reset();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
+            } finally {
+                // Восстанавливаем кнопку
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Функция отображения сообщений
+        function showMessage(type, text) {
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (type === 'success') {
+                successMessage.textContent = text;
+                successMessage.className = 'message success';
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                // Автоматически скрываем сообщение через 5 секунд
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+                
+            } else if (type === 'error') {
+                errorMessage.textContent = text;
+                errorMessage.className = 'message error';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+        }
+        
+        // Валидация телефона
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^\d\+\-\s\(\)]/g, '');
         });
     </script>
 </body>
