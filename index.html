@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stroylogistic - Железнодорожные грузоперевозки в Узбекистане и СНГ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7zm5 4h5v2h-5zm-5-8h10v2H7z' fill='white'/></svg>">
     <style>
         :root {
             --primary: #e67e22;
@@ -38,12 +39,13 @@
         
         /* Header */
         header {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px 0;
             position: fixed;
             width: 100%;
-            z-index: 100;
-            backdrop-filter: blur(5px);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
         }
         
         .header-container {
@@ -57,7 +59,7 @@
             font-weight: 700;
             color: var(--light);
             text-decoration: none;
-            text-transform:uppercase;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
         
@@ -79,10 +81,27 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
+            padding: 5px 0;
         }
         
         nav ul li a:hover {
             color: var(--primary);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
         }
         
         .contact-header {
@@ -103,22 +122,65 @@
             color: var(--primary);
         }
         
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--darker);
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        .mobile-menu ul {
+            list-style: none;
+        }
+        
+        .mobile-menu ul li {
+            margin-bottom: 15px;
+        }
+        
+        .mobile-menu ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 0;
+            display: block;
+        }
+        
         .btn {
             display: inline-block;
             background-color: var(--primary);
             color: var(--light);
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 5px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
             border: none;
             cursor: pointer;
+            font-size: 16px;
         }
         
         .btn:hover {
             background-color: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
         }
         
         .btn-outline {
@@ -129,6 +191,7 @@
         /* Hero Section */
         .hero {
             height: 100vh;
+            min-height: 600px;
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1678984239565-078e4c996756?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
             display: flex;
             align-items: center;
@@ -149,7 +212,7 @@
         
         .hero p {
             font-size: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             color: var(--gray);
         }
         
@@ -157,6 +220,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
         
         /* About Section */
@@ -198,10 +262,12 @@
         .about-text h3 {
             font-size: 28px;
             margin-bottom: 20px;
+            line-height: 1.3;
         }
         
         .about-text p {
             margin-bottom: 30px;
+            font-size: 18px;
         }
         
         .stats {
@@ -213,9 +279,15 @@
         
         .stat-item {
             text-align: center;
-            padding: 20px;
+            padding: 25px 15px;
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.1);
         }
         
         .stat-item h4 {
@@ -227,6 +299,7 @@
         .stat-item p {
             font-size: 14px;
             color: var(--gray);
+            margin-bottom: 0;
         }
         
         /* Services */
@@ -242,14 +315,16 @@
         
         .service-card {
             background-color: var(--darker);
-            padding: 30px;
+            padding: 40px 30px;
             border-radius: 5px;
-            transition: transform 0.3s;
+            transition: all 0.3s;
             border-bottom: 3px solid var(--primary);
+            height: 100%;
         }
         
         .service-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         
         .service-icon {
@@ -261,6 +336,11 @@
         .service-card h3 {
             font-size: 22px;
             margin-bottom: 15px;
+        }
+        
+        .service-card p {
+            color: var(--gray);
+            line-height: 1.6;
         }
         
         /* Why Us */
@@ -277,12 +357,22 @@
         .feature {
             display: flex;
             gap: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.08);
         }
         
         .feature-icon {
             font-size: 24px;
             color: var(--primary);
             margin-top: 5px;
+            flex-shrink: 0;
         }
         
         .feature-text h4 {
@@ -334,6 +424,7 @@
             max-width: 700px;
             margin: 0 auto 30px;
             color: var(--gray);
+            font-size: 18px;
         }
         
         .form-container {
@@ -352,7 +443,7 @@
         
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 500;
         }
         
@@ -364,11 +455,13 @@
             border-radius: 5px;
             color: var(--light);
             font-size: 16px;
+            transition: all 0.3s;
         }
         
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
         }
         
         select.form-control {
@@ -393,12 +486,14 @@
         }
         
         .footer-logo {
-          font-size: 22px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--light);
             text-decoration: none;
-            text-transform:uppercase;
+            text-transform: uppercase;
             letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
         }
         
         .footer-logo span {
@@ -409,6 +504,7 @@
             color: var(--gray);
             font-size: small;
             margin-bottom: 20px;
+            line-height: 1.6;
         }
         
         .social-links {
@@ -426,6 +522,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            text-decoration: none;
         }
         
         .social-links a:hover {
@@ -466,6 +563,7 @@
         
         .footer-links ul li a:hover {
             color: var(--primary);
+            text-decoration: none;
         }
         
         .contact-info {
@@ -483,6 +581,7 @@
             color: var(--primary);
             margin-right: 10px;
             margin-top: 3px;
+            flex-shrink: 0;
         }
         
         .copyright {
@@ -494,13 +593,33 @@
         }
         
         /* Responsive */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 30px;
+            }
+        }
+        
         @media (max-width: 992px) {
             .about-content {
                 flex-direction: column;
+                gap: 40px;
             }
             
             .hero h1 {
                 font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .section-title h2 {
+                font-size: 32px;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
             }
         }
         
@@ -509,22 +628,169 @@
                 display: none;
             }
             
-            .hero-btns {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .contact-header {
+                display: none;
+            }
+            
+            .contact-header.mobile {
+                display: flex;
                 flex-direction: column;
+                margin-top: 20px;
                 gap: 10px;
             }
             
-            .btn {
+            .contact-header.mobile a {
+                margin-left: 0;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding-top: 100px;
+                height: auto;
+                min-height: 500px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+                margin-bottom: 30px;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .hero-btns .btn {
                 width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
             }
             
             .section {
                 padding: 60px 0;
             }
             
+            .section-title {
+                margin-bottom: 40px;
+            }
+            
             .section-title h2 {
                 font-size: 28px;
             }
+            
+            .about-text h3 {
+                font-size: 24px;
+            }
+            
+            .about-text p {
+                font-size: 16px;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .stat-item {
+                padding: 20px 15px;
+            }
+            
+            .stat-item h4 {
+                font-size: 32px;
+            }
+            
+            .services-grid,
+            .features,
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .service-card {
+                padding: 30px 20px;
+            }
+            
+            .feature {
+                padding: 20px;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            .cta h2 {
+                font-size: 28px;
+            }
+            
+            .cta p {
+                font-size: 16px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .footer-links h4 {
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .hero h1 {
+                font-size: 24px;
+            }
+            
+            .hero p {
+                font-size: 14px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .section-title h2 {
+                font-size: 24px;
+            }
+            
+            .about-text h3 {
+                font-size: 22px;
+            }
+            
+            .gallery-item {
+                height: 200px;
+            }
+            
+            .copyright {
+                font-size: 12px;
+            }
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
         }
     </style>
 </head>
@@ -532,9 +798,9 @@
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <a href="#" class="logo">Stroy<span>logistic</span></a>
+            <a href="#home" class="logo">Stroy<span>logistic</span></a>
             
-            <nav>
+            <nav class="desktop-nav">
                 <ul>
                     <li><a href="#home">Главная</a></li>
                     <li><a href="#services">Услуги</a></li>
@@ -547,13 +813,30 @@
                 <a href="tel:+998334190878"><i class="fas fa-phone"></i> +998 33 419 08 78</a>
                 <a href="#contact-form" class="btn">Оставить заявку</a>
             </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <ul>
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#about">О компании</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <div class="contact-header mobile">
+                <a href="tel:+998334190878"><i class="fas fa-phone"></i> +998 33 419 08 78</a>
+                <a href="#contact-form" class="btn">Оставить заявку</a>
+            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <div class="hero-content">
+            <div class="hero-content fade-in">
                 <h1>Надежная железнодорожная логистика в Узбекистане и СНГ</h1>
                 <p>Безопасные и своевременные грузоперевозки по оптимальным маршрутам</p>
                 <div class="hero-btns">
@@ -568,7 +851,7 @@
     <section class="section about" id="about">
         <div class="container">
             <div class="about-content">
-                <div class="about-text">
+                <div class="about-text fade-in">
                     <h3>Stroylogistic – ваш надежный партнёр в сфере железнодорожных грузоперевозок</h3>
                     <p>Основная наша деятельность – оказание комплексной услуги по перевозке грузов в международном сообщении с использованием собственного и привлеченного железнодорожного транспорта. Мы специализируемся на эффективной и безопасной доставке грузов по Узбекистану, Казахстану и странам СНГ. Наш опыт, профессионализм и безупречная репутация – залог вашего спокойствия и успеха.</p>
                     <p>Компания Stroylogistic уже более 3 лет успешно работает на рынке Узбекистана, предоставляя высококачественные услуги по железнодорожным перевозкам и логистике. Мы специализируемся на транспортировке различных видов грузов, включая угля, строительные материалы и кирпичи.</p>
@@ -595,13 +878,13 @@
     <!-- Services Section -->
     <section class="section services" id="services">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title fade-in">
                 <h2>Наши услуги</h2>
                 <p>Мы предлагаем полный спектр услуг по железнодорожным грузоперевозкам</p>
             </div>
             
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card fade-in">
                     <div class="service-icon">
                         <i class="fas fa-train"></i>
                     </div>
@@ -609,7 +892,7 @@
                     <p>Организация перевозки грузов по территории Узбекистана, Казахстана и стран СНГ с использованием крытых вагонов и полувагонов.</p>
                 </div>
                 
-                <div class="service-card">
+                <div class="service-card fade-in" style="animation-delay: 0.2s">
                     <div class="service-icon">
                         <i class="fas fa-box-open"></i>
                     </div>
@@ -617,7 +900,7 @@
                     <p>Предоставление в аренду собственных и привлечённых крытых и полувагонов для перевозки различных типов грузов.</p>
                 </div>
                 
-                <div class="service-card">
+                <div class="service-card fade-in" style="animation-delay: 0.4s">
                     <div class="service-icon">
                         <i class="fas fa-clipboard-check"></i>
                     </div>
@@ -631,13 +914,13 @@
     <!-- Why Us Section -->
     <section class="section why-us">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title fade-in">
                 <h2>Почему выбирают Stroylogistic?</h2>
                 <p>Наши преимущества, которые делают нас лучшими в своей сфере</p>
             </div>
             
             <div class="features">
-                <div class="feature">
+                <div class="feature fade-in">
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
@@ -647,7 +930,7 @@
                     </div>
                 </div>
                 
-                <div class="feature">
+                <div class="feature fade-in" style="animation-delay: 0.1s">
                     <div class="feature-icon">
                         <i class="fas fa-tag"></i>
                     </div>
@@ -657,7 +940,7 @@
                     </div>
                 </div>
                 
-                <div class="feature">
+                <div class="feature fade-in" style="animation-delay: 0.2s">
                     <div class="feature-icon">
                         <i class="fas fa-train"></i>
                     </div>
@@ -667,7 +950,7 @@
                     </div>
                 </div>
                 
-                <div class="feature">
+                <div class="feature fade-in" style="animation-delay: 0.3s">
                     <div class="feature-icon">
                         <i class="fas fa-map-marked-alt"></i>
                     </div>
@@ -677,7 +960,7 @@
                     </div>
                 </div>
                 
-                <div class="feature">
+                <div class="feature fade-in" style="animation-delay: 0.4s">
                     <div class="feature-icon">
                         <i class="fas fa-users"></i>
                     </div>
@@ -687,7 +970,7 @@
                     </div>
                 </div>
                 
-                <div class="feature">
+                <div class="feature fade-in" style="animation-delay: 0.5s">
                     <div class="feature-icon">
                         <i class="fas fa-user-tie"></i>
                     </div>
@@ -703,19 +986,19 @@
     <!-- Gallery Section -->
     <section class="section">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title fade-in">
                 <h2>Наша работа</h2>
                 <p>Фото наших перевозок и вагонов</p>
             </div>
             
             <div class="gallery">
-                <div class="gallery-item">
+                <div class="gallery-item fade-in">
                     <img src="https://images.unsplash.com/flagged/photo-1550719723-8602e87f2dc8?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Грузовой поезд">
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item fade-in" style="animation-delay: 0.1s">
                     <img src="https://images.unsplash.com/photo-1712515331511-238cf078fc88?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Погрузка угля">
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item fade-in" style="animation-delay: 0.2s">
                     <img src="https://images.unsplash.com/photo-1657996460188-ff5698dce15f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Железнодорожные пути">
                 </div>
             </div>
@@ -725,60 +1008,46 @@
     <!-- CTA Section -->
     <section class="section cta" id="contact-form">
         <div class="container">
-            <h2>Оставьте заявку</h2>
-            <p>Мы готовы ответить на все ваши вопросы и рассчитать стоимость перевозки</p>
+            <div class="section-title fade-in">
+                <h2>Оставьте заявку</h2>
+                <p>Мы готовы ответить на все ваши вопросы и рассчитать стоимость перевозки</p>
+            </div>
             
-            <div class="form-container">
-                <form id="contactForm" action="https://script.google.com/macros/s/AKfycbzVDe_bKVPENmw0d9wWT4MUY70Gx374VqVLGg3TdrVnI-jUeyNDzqtRn1zNbSaN6YYBVg/exec" method="POST">
-    <div class="form-group">
-        <label for="name">Ваше имя</label>
-        <input type="text" id="name" name="имя" class="form-control" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="phone">Телефон</label>
-        <input type="tel" id="phone" name="телефон" class="form-control" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" class="form-control" required>
-    </div>
-    
-    
-    <div class="form-group">
-        <label for="comments">Сообщение</label>
-        <textarea id="comments" name="комментарии" class="form-control" rows="4"></textarea>
-    </div>
-    
-    <button type="submit" class="btn">Отправить заявку</button>
-</form>
-
-<script>
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    
-    fetch(form.action, {
-      method: 'POST',
-      body: new URLSearchParams(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.result === 'success') {
-        alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
-        form.reset();
-      } else {
-        throw new Error(data.error);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('Произошла ошибка. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
-    });
-  });
-</script>
+            <div class="form-container fade-in">
+                <form id="contactForm" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" name="имя" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="телефон" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cargo">Тип груза (опционально)</label>
+                        <select id="cargo" name="тип груза" class="form-control">
+                            <option value="">Выберите тип груза</option>
+                            <option value="Уголь">Уголь</option>
+                            <option value="Строительные материалы">Строительные материалы</option>
+                            <option value="Кирпичи">Кирпичи</option>
+                            <option value="Другое">Другое</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comments">Сообщение</label>
+                        <textarea id="comments" name="комментарии" class="form-control" rows="4" placeholder="Опишите ваш груз и маршрут..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Отправить заявку</button>
+                </form>
             </div>
         </div>
     </section>
@@ -787,17 +1056,17 @@
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about">
-                    <a href="#" class="footer-logo">Stroy<span>logistic</span></a>
+                <div class="footer-about fade-in">
+                    <a href="#home" class="footer-logo">Stroy<span>logistic</span></a>
                     <p>Ваш надежный партнёр в сфере железнодорожных грузоперевозок.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
                 
-                <div class="footer-links">
+                <div class="footer-links fade-in" style="animation-delay: 0.1s">
                     <h4>Меню</h4>
                     <ul>
                         <li><a href="#home">Главная</a></li>
@@ -807,16 +1076,16 @@
                     </ul>
                 </div>
                 
-                <div class="footer-links">
+                <div class="footer-links fade-in" style="animation-delay: 0.2s">
                     <h4>Услуги</h4>
                     <ul>
-                        <li><a href="#">Железнодорожные перевозки</a></li>
-                        <li><a href="#">Аренда вагонов</a></li>
-                        <li><a href="#">Экспедирование грузов</a></li>
+                        <li><a href="#services">Железнодорожные перевозки</a></li>
+                        <li><a href="#services">Аренда вагонов</a></li>
+                        <li><a href="#services">Экспедирование грузов</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-contact">
+                <div class="footer-contact fade-in" style="animation-delay: 0.3s">
                     <h4>Контакты</h4>
                     <div class="contact-info">
                         <p><i class="fas fa-map-marker-alt"></i> г. Ташкент, ул. Чарх Камолон, дом 1, Узбекистан</p>
@@ -831,6 +1100,113 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Мобильное меню
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = mobileMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Закрытие меню при клике на ссылку
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Анимация при прокрутке
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за всеми элементами с классом fade-in
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Обработка формы (тестовая версия)
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Собираем данные формы
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Здесь должен быть URL вашего Google Apps Script
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzVDe_bKVPENmw0d9wWT4MUY70Gx374VqVLGg3TdrVnI-jUeyNDzqtRn1zNbSaN6YYBVg/exec';
+            
+            // Отправка данных (закомментировано до настройки Google Apps Script)
+            /*
+            fetch(scriptURL, {
+                method: 'POST',
+                body: new URLSearchParams(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+                    this.reset();
+                } else {
+                    throw new Error(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
+            });
+            */
+            
+            // Временное сообщение (удалите после настройки Google Apps Script)
+            alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.\n\nДля подключения Google Apps Script следуйте инструкциям выше.');
+            this.reset();
+        });
+        
+        // Изменение хедера при прокрутке
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+                header.style.padding = '10px 0';
+            } else {
+                header.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                header.style.padding = '15px 0';
+            }
+        });
+    </script>
 </body>
 </html>
-
